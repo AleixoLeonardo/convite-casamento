@@ -317,8 +317,59 @@
             color: var(--cor-roxo-escuro);
             margin-top: 20px;
         }
+
+        .music-btn {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            background-color: var(--cor-roxo-escuro);
+            color: #ffffff;
+            border: 2px solid #ffffff;
+            cursor: pointer;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 1.2rem;
+            z-index: 99;
+            transition: transform 0.3s ease, background-color 0.3s ease;
+        }
+
+        .music-btn:hover {
+            transform: scale(1.1);
+            background-color: var(--cor-roxo-medio);
+        }
+
+        /* Animação para quando a música estiver tocando */
+        .music-playing {
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0% {
+                box-shadow: 0 0 0 0 rgba(74, 38, 86, 0.6);
+            }
+            70% {
+                box-shadow: 0 0 0 15px rgba(74, 38, 86, 0);
+            }
+            100% {
+                box-shadow: 0 0 0 0 rgba(74, 38, 86, 0);
+            }
+        }
     </style>
 </head>
+<audio id="bgMusic" loop>
+    <source src="angra.mp3" type="audio/mpeg">
+    Seu navegador não suporta o elemento de áudio.
+</audio>
+
+<!-- Botão Flutuante de Música -->
+<button class="music-btn" id="musicBtn" onclick="toggleMusic()">
+    <i class="fa-solid fa-music" id="musicIcon"></i>
+</button>
 <body>
 
     <div class="container">
@@ -436,6 +487,44 @@
     </div>
 
     <script>
+        const music = document.getElementById('bgMusic');
+        // Define o volume inicial em 30% (suave para fundo)
+        music.volume = 0.1;
+        const musicBtn = document.getElementById('musicBtn');
+        const musicIcon = document.getElementById('musicIcon');
+        let isPlaying = false;
+
+        function toggleMusic() {
+            if (isPlaying) {
+                music.pause();
+                musicIcon.classList.remove('fa-pause');
+                musicIcon.classList.add('fa-music');
+                musicBtn.classList.remove('music-playing');
+                isPlaying = false;
+            } else {
+                music.play();
+                musicIcon.classList.remove('fa-music');
+                musicIcon.classList.add('fa-pause');
+                musicBtn.classList.add('music-playing');
+                isPlaying = true;
+            }
+        }
+
+        // Inicia a música no primeiro clique que o convidado der na tela (para burlar a trava de autoplay)
+        document.body.addEventListener('click', function startMusicOnFirstClick() {
+            if (!isPlaying) {
+                music.play().then(() => {
+                    musicIcon.classList.remove('fa-music');
+                    musicIcon.classList.add('fa-pause');
+                    musicBtn.classList.add('music-playing');
+                    isPlaying = true;
+                }).catch(error => {
+                    console.log("Autoplay bloqueado até interação manual do usuário.", error);
+                });
+            }
+            // Remove o ouvinte após o primeiro clique para não interferir nos cliques subsequentes
+            document.body.removeEventListener('click', startMusicOnFirstClick);
+        }, { once: true });
         // Funções para abrir/fechar modais
         function openModal(id) {
             document.getElementById(id).style.display = 'flex';
