@@ -41,8 +41,13 @@
             align-items: center;
             min-height: 100vh;
             padding: 20px;
-            background-image: radial-gradient(#e4d6ee 1px, transparent 1px);
-            background-size: 20px 20px;
+            
+            /* Imagem de fundo gerada */
+            background-image: url('fundo.png');
+            background-size: cover;          /* Preenche a tela toda */
+            background-position: center;     /* Centraliza a imagem */
+            background-repeat: no-repeat;    /* Não repete (ou use repeat se for estampa) */
+            background-attachment: fixed;    /* Efeito bonito onde o fundo fica fixo na rolagem */
         }
 
         .container {
