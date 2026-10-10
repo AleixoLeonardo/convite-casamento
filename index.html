@@ -1,0 +1,472 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Convite de Casamento - Márcio e Renata</title>
+    
+    <!-- Google Fonts para estilo elegante -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600&family=Great+Vibes&family=Montserrat:wght@300;400;500&display=swap" rel="stylesheet">
+    
+    <!-- Ícones (Font Awesome) -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <style>
+        :root {
+            --cor-fundo: #f4eff8;
+            --cor-card: #ffffff;
+            --cor-roxo-escuro: #4a2656;
+            --cor-roxo-medio: #7a4f88;
+            --cor-roxo-claro: #d8c8e3;
+            --cor-texto: #333333;
+            --fonte-titulo: 'Great Vibes', cursive;
+            --fonte-serif: 'Cinzel', serif;
+            --fonte-corpo: 'Montserrat', sans-serif;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            background-color: var(--cor-fundo);
+            color: var(--cor-texto);
+            font-family: var(--fonte-corpo);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            padding: 20px;
+            background-image: radial-gradient(#e4d6ee 1px, transparent 1px);
+            background-size: 20px 20px;
+        }
+
+        .container {
+            max-width: 600px;
+            width: 100%;
+            background: var(--cor-card);
+            border-radius: 16px;
+            padding: 40px 25px;
+            box-shadow: 0 10px 30px rgba(74, 38, 86, 0.1);
+            text-align: center;
+            border: 2px solid var(--cor-roxo-claro);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .container::before {
+            content: '';
+            position: absolute;
+            top: 12px;
+            left: 12px;
+            right: 12px;
+            bottom: 12px;
+            border: 1px solid var(--cor-roxo-claro);
+            border-radius: 10px;
+            pointer-events: none;
+        }
+
+        /* Monograma */
+        .monogram {
+            width: 90px;
+            height: 90px;
+            border: 1px solid var(--cor-roxo-medio);
+            border-radius: 50%;
+            margin: 0 auto 20px auto;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            color: var(--cor-roxo-escuro);
+            font-family: var(--fonte-serif);
+            font-size: 1.5rem;
+            position: relative;
+        }
+
+        .monogram span.heart {
+            font-size: 0.8rem;
+            margin-top: -2px;
+        }
+
+        /* Mensagens e Nomes */
+        .subtitle {
+            font-family: var(--fonte-serif);
+            font-size: 0.85rem;
+            letter-spacing: 2px;
+            color: var(--cor-roxo-escuro);
+            text-transform: uppercase;
+            margin-bottom: 20px;
+            line-height: 1.5;
+        }
+
+        .names {
+            font-family: var(--fonte-titulo);
+            font-size: 3.8rem;
+            color: var(--cor-roxo-escuro);
+            line-height: 1.1;
+            margin: 10px 0;
+        }
+
+        .names .and {
+            font-size: 2rem;
+            display: block;
+            margin: -10px 0;
+            font-family: var(--fonte-titulo);
+        }
+
+        .phrase {
+            font-family: var(--fonte-serif);
+            font-size: 0.75rem;
+            letter-spacing: 1.5px;
+            color: var(--cor-roxo-escuro);
+            text-transform: uppercase;
+            margin: 25px 0;
+            line-height: 1.6;
+        }
+
+        /* Seção Data e Hora */
+        .date-box {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 15px;
+            margin: 30px 0;
+            color: var(--cor-roxo-escuro);
+            font-family: var(--fonte-serif);
+        }
+
+        .date-side {
+            font-size: 0.85rem;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            border-top: 1px solid var(--cor-roxo-claro);
+            border-bottom: 1px solid var(--cor-roxo-claro);
+            padding: 8px 0;
+            flex: 1;
+        }
+
+        .date-center {
+            border-left: 2px solid var(--cor-roxo-escuro);
+            border-right: 2px solid var(--cor-roxo-escuro);
+            padding: 0 15px;
+        }
+
+        .date-center .day {
+            font-size: 2.8rem;
+            font-weight: 600;
+            line-height: 1;
+        }
+
+        .date-center .month-year {
+            font-size: 0.8rem;
+            letter-spacing: 2px;
+        }
+
+        /* Localização */
+        .location-box {
+            margin: 25px 0;
+        }
+
+        .location-title {
+            font-family: var(--fonte-titulo);
+            font-size: 2.3rem;
+            color: var(--cor-roxo-escuro);
+        }
+
+        .location-city {
+            font-family: var(--fonte-serif);
+            font-size: 0.8rem;
+            letter-spacing: 2px;
+            color: var(--cor-roxo-medio);
+            margin-top: 5px;
+        }
+
+        /* Botões de Ação */
+        .buttons-grid {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            margin-top: 35px;
+            z-index: 2;
+            position: relative;
+        }
+
+        .btn {
+            background-color: var(--cor-roxo-escuro);
+            color: #ffffff;
+            border: none;
+            padding: 14px 20px;
+            border-radius: 30px;
+            font-family: var(--fonte-serif);
+            font-size: 0.85rem;
+            letter-spacing: 1.5px;
+            text-transform: uppercase;
+            cursor: pointer;
+            text-decoration: none;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            box-shadow: 0 4px 12px rgba(74, 38, 86, 0.15);
+        }
+
+        .btn:hover {
+            background-color: var(--cor-roxo-medio);
+            transform: translateY(-2px);
+            box-shadow: 0 6px 16px rgba(74, 38, 86, 0.25);
+        }
+
+        .btn-outline {
+            background-color: transparent;
+            color: var(--cor-roxo-escuro);
+            border: 1.5px solid var(--cor-roxo-escuro);
+        }
+
+        .btn-outline:hover {
+            background-color: var(--cor-fundo);
+            color: var(--cor-roxo-escuro);
+        }
+
+        /* Modais */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.5);
+            backdrop-filter: blur(4px);
+            justify-content: center;
+            align-items: center;
+            z-index: 100;
+            padding: 20px;
+        }
+
+        .modal-content {
+            background: white;
+            padding: 35px 25px;
+            border-radius: 16px;
+            max-width: 480px;
+            width: 100%;
+            text-align: center;
+            position: relative;
+            border: 1px solid var(--cor-roxo-claro);
+            box-shadow: 0 10px 25px rgba(0,0,0,0.2);
+        }
+
+        .close-btn {
+            position: absolute;
+            top: 15px;
+            right: 15px;
+            font-size: 1.2rem;
+            cursor: pointer;
+            color: #888;
+        }
+
+        .form-group {
+            margin-bottom: 15px;
+            text-align: left;
+        }
+
+        .form-group label {
+            display: block;
+            font-size: 0.8rem;
+            margin-bottom: 5px;
+            color: var(--cor-roxo-escuro);
+            font-family: var(--fonte-serif);
+        }
+
+        .form-group input, .form-group select {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid var(--cor-roxo-claro);
+            border-radius: 8px;
+            font-family: var(--fonte-corpo);
+        }
+
+        /* Estilos do Modal de Presentes */
+        .gift-title {
+            font-family: var(--fonte-serif);
+            color: var(--cor-roxo-escuro);
+            font-size: 1rem;
+            letter-spacing: 1.5px;
+            margin-bottom: 20px;
+        }
+
+        .gift-text {
+            font-size: 0.95rem;
+            line-height: 1.7;
+            color: #444444;
+            margin-bottom: 15px;
+        }
+
+        .gift-signature {
+            font-family: var(--fonte-titulo);
+            font-size: 2.2rem;
+            color: var(--cor-roxo-escuro);
+            margin-top: 20px;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <!-- Monograma -->
+        <div class="monogram">
+            M&R
+            <span class="heart">♥</span>
+        </div>
+
+        <!-- Convite -->
+        <p class="subtitle">Com muito amor, convidamos você<br>para celebrar o nosso casamento</p>
+
+        <h1 class="names">
+            Márcio
+            <span class="and">e</span>
+            Renata
+        </h1>
+
+        <p class="phrase">
+            Juntos, queremos viver o nosso para sempre<br>
+            e contar com a sua presença nesse dia tão especial!
+        </p>
+
+        <!-- Data e Hora -->
+        <div class="date-box">
+            <div class="date-side">Sábado<br><small>♥</small></div>
+            <div class="date-center">
+                <div class="day">20</div>
+                <div class="month-year">MARÇO<br>2027</div>
+            </div>
+            <div class="date-side">Às 10 Horas<br><small>♥</small></div>
+        </div>
+
+        <!-- Local -->
+        <div class="location-box">
+            <i class="fa-solid fa-location-dot" style="color: var(--cor-roxo-escuro);"></i>
+            <div class="location-title">Chácara Recanto Fama</div>
+            <div class="location-city">CAÇAPAVA - SP</div>
+        </div>
+
+        <!-- Botões Interativos -->
+        <div class="buttons-grid">
+            <!-- Botão do Google Maps -->
+            <a href="https://maps.google.com/?q=Chácara+Recanto+Fama+Caçapava+SP" target="_blank" class="btn">
+                <i class="fa-solid fa-map-location-dot"></i> Ver Local no Google Maps
+            </a>
+
+            <!-- Botão para Abrir Modal RSVP -->
+            <button class="btn btn-outline" onclick="openModal('rsvpModal')">
+                <i class="fa-solid fa-check"></i> Confirmar Presença
+            </button>
+
+            <!-- Botão para Abrir Modal de Presentes -->
+            <button class="btn btn-outline" onclick="openModal('giftsModal')">
+                <i class="fa-solid fa-gift"></i> Sugestão de Presente
+            </button>
+        </div>
+    </div>
+
+    <!-- MODAL RSVP (Confirmação de Presença) -->
+    <div id="rsvpModal" class="modal">
+        <div class="modal-content">
+            <span class="close-btn" onclick="closeModal('rsvpModal')">&times;</span>
+            <h3 style="font-family: var(--fonte-serif); color: var(--cor-roxo-escuro); margin-bottom: 15px;">Confirmar Presença</h3>
+            
+            <form id="rsvpForm" onsubmit="sendWhatsApp(event)">
+                <div class="form-group">
+                    <label for="nome">Seu Nome Completo:</label>
+                    <input type="text" id="nome" required placeholder="Digite seu nome">
+                </div>
+                <div class="form-group">
+                    <label for="acompanhantes">Quantidade de Acompanhantes:</label>
+                    <select id="acompanhantes">
+                        <option value="0">Vou sozinho(a)</option>
+                        <option value="1">1 Acompanhante</option>
+                        <option value="2">2 Acompanhantes</option>
+                        <option value="3">3 Acompanhantes</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="nomesAcompanhantes">Nome do(s) Acompanhante(s):</label>
+                    <input type="text" id="nomesAcompanhantes" placeholder="Ex: Maria (esposa), Pedro (filho)">
+                </div>
+                <button type="submit" class="btn" style="width: 100%; margin-top: 10px;">
+                    <i class="fa-brands fa-whatsapp"></i> Enviar pelo WhatsApp
+                </button>
+            </form>
+        </div>
+    </div>
+
+    <!-- MODAL SUGESTÃO DE PRESENTES -->
+    <div id="giftsModal" class="modal">
+        <div class="modal-content">
+            <span class="close-btn" onclick="closeModal('giftsModal')">&times;</span>
+            
+            <h3 class="gift-title">🎁 SUGESTÃO DE PRESENTE</h3>
+            
+            <p class="gift-text">
+                A sua presença será, sem dúvida, o nosso maior presente! ❤️
+            </p>
+            
+            <p class="gift-text">
+                Mas, se quiser nos presentear, fique à vontade para escolher aquilo que o seu coração mandar.
+                O mais importante para nós é celebrar esse dia tão especial ao lado de pessoas queridas.
+            </p>
+
+            <p class="gift-text" style="margin-top: 15px; font-weight: 500; color: var(--cor-roxo-escuro);">
+                Com carinho,
+            </p>
+
+            <div class="gift-signature">
+                Márcio & Renata 💜
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Funções para abrir/fechar modais
+        function openModal(id) {
+            document.getElementById(id).style.display = 'flex';
+        }
+
+        function closeModal(id) {
+            document.getElementById(id).style.display = 'none';
+        }
+
+        // Fechar modal ao clicar fora do conteúdo
+        window.onclick = function(event) {
+            if (event.target.classList.contains('modal')) {
+                event.target.style.display = 'none';
+            }
+        }
+
+        // Enviar confirmação via WhatsApp
+        function sendWhatsApp(event) {
+            event.preventDefault();
+            
+            const numeroTelefone = "5512991956641"; 
+
+            const nome = document.getElementById('nome').value;
+            const acompanhantes = document.getElementById('acompanhantes').value;
+            const nomesAcompanhantes = document.getElementById('nomesAcompanhantes').value;
+
+            let mensagem = `Olá! Gostaria de confirmar minha presença no casamento de Márcio e Renata! ♥%0A%0A`;
+            mensagem += `*Nome:* ${nome}%0A`;
+            mensagem += `*Acompanhantes:* ${acompanhantes}%0A`;
+            if (nomesAcompanhantes) {
+                mensagem += `*Nomes:* ${nomesAcompanhantes}%0A`;
+            }
+
+            const url = `https://api.whatsapp.com/send?phone=${numeroTelefone}&text=${mensagem}`;
+            window.open(url, '_blank');
+        }
+    </script>
+</body>
+</html>
