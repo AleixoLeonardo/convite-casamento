@@ -413,11 +413,6 @@
         }
     </style>
 </head>
- <!-- Player de Música -->
-<audio id="bgMusic" loop>
-    <source src="musica.mp3" type="audio/mpeg">
-</audio>
-    
 <body>
 
     <div class="container">
@@ -502,7 +497,7 @@
 
     <!-- Player de Música -->
     <audio id="bgMusic" loop>
-        <source src="musica.mp3" type="audio/mpeg">
+        <source src="angra.mp3" type="audio/mpeg">
     </audio>
 
     <div class="music-player-container">
@@ -629,43 +624,4 @@
                 musicIcon.classList.remove('fa-pause');
                 musicIcon.classList.add('fa-music');
                 isPlaying = false;
-            } else {
-                music.play();
-                musicIcon.classList.remove('fa-music');
-                musicIcon.classList.add('fa-pause');
-                isPlaying = true;
-            }
-        }
-
-        document.body.addEventListener('click', function startMusicOnFirstClick() {
-            if (!isPlaying) {
-                music.play().then(() => {
-                    musicIcon.classList.remove('fa-music');
-                    musicIcon.classList.add('fa-pause');
-                    isPlaying = true;
-                }).catch(err => console.log("Autoplay bloqueado:", err));
-            }
-        }, { once: true });
-
-        // --- WHATSAPP RSVP ---
-        function sendWhatsApp(event) {
-            event.preventDefault();
-            const numeroTelefone = "5512999999999"; // Coloque o número aqui
-
-            const nome = document.getElementById('nome').value;
-            const acompanhantes = document.getElementById('acompanhantes').value;
-            const nomesAcompanhantes = document.getElementById('nomesAcompanhantes').value;
-
-            let mensagem = `Olá! Gostaria de confirmar minha presença no casamento de Márcio e Renata! ♥%0A%0A`;
-            mensagem += `*Nome:* ${nome}%0A`;
-            mensagem += `*Acompanhantes:* ${acompanhantes}%0A`;
-            if (nomesAcompanhantes) {
-                mensagem += `*Nomes:* ${nomesAcompanhantes}%0A`;
-            }
-
-            const url = `https://api.whatsapp.com/send?phone=${numeroTelefone}&text=${mensagem}`;
-            window.open(url, '_blank');
-        }
-    </script>
-</body>
-</html>
+                
