@@ -41,13 +41,8 @@
             align-items: center;
             min-height: 100vh;
             padding: 20px;
-            
-            /* Imagem de fundo gerada */
-            background-image: url('fundo.png');
-            background-size: cover;          /* Preenche a tela toda */
-            background-position: center;     /* Centraliza a imagem */
-            background-repeat: no-repeat;    /* Não repete (ou use repeat se for estampa) */
-            background-attachment: fixed;    /* Efeito bonito onde o fundo fica fixo na rolagem */
+            background-image: radial-gradient(#e4d6ee 1px, transparent 1px);
+            background-size: 20px 20px;
         }
 
         .container {
@@ -139,7 +134,7 @@
             justify-content: center;
             align-items: center;
             gap: 15px;
-            margin: 30px 0;
+            margin: 30px 0 20px 0;
             color: var(--cor-roxo-escuro);
             font-family: var(--fonte-serif);
         }
@@ -169,6 +164,59 @@
         .date-center .month-year {
             font-size: 0.8rem;
             letter-spacing: 2px;
+        }
+
+        /* Contagem Regressiva */
+        .countdown-container {
+            margin: 25px 0 30px 0;
+            background: #faf7fc;
+            border: 1px dashed var(--cor-roxo-claro);
+            border-radius: 12px;
+            padding: 15px 10px;
+        }
+
+        .countdown-title {
+            font-family: var(--fonte-serif);
+            font-size: 0.75rem;
+            letter-spacing: 2px;
+            color: var(--cor-roxo-escuro);
+            text-transform: uppercase;
+            margin-bottom: 12px;
+        }
+
+        .countdown-timer {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .timer-box {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            min-width: 55px;
+        }
+
+        .timer-number {
+            font-family: var(--fonte-serif);
+            font-size: 1.5rem;
+            font-weight: 600;
+            color: var(--cor-roxo-escuro);
+        }
+
+        .timer-label {
+            font-size: 0.65rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            color: var(--cor-roxo-medio);
+            margin-top: 2px;
+        }
+
+        .timer-divider {
+            font-size: 1.2rem;
+            color: var(--cor-roxo-medio);
+            margin-top: -12px;
         }
 
         /* Localização */
@@ -237,6 +285,53 @@
             color: var(--cor-roxo-escuro);
         }
 
+        /* Player Flutuante de Música */
+        .music-player-container {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            background: rgba(255, 255, 255, 0.95);
+            padding: 6px 12px 6px 16px;
+            border-radius: 30px;
+            box-shadow: 0 4px 15px rgba(74, 38, 86, 0.2);
+            border: 1px solid var(--cor-roxo-claro);
+            backdrop-filter: blur(5px);
+            z-index: 99;
+        }
+
+        .music-btn {
+            width: 42px;
+            height: 42px;
+            border-radius: 50%;
+            background-color: var(--cor-roxo-escuro);
+            color: #ffffff;
+            border: none;
+            cursor: pointer;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 1.1rem;
+            transition: transform 0.2s ease, background-color 0.2s ease;
+        }
+
+        .music-btn:hover {
+            transform: scale(1.08);
+            background-color: var(--cor-roxo-medio);
+        }
+
+        .volume-slider {
+            width: 80px;
+            height: 4px;
+            border-radius: 2px;
+            background: var(--cor-roxo-claro);
+            outline: none;
+            accent-color: var(--cor-roxo-escuro);
+            cursor: pointer;
+        }
+
         /* Modais */
         .modal {
             display: none;
@@ -295,7 +390,6 @@
             font-family: var(--fonte-corpo);
         }
 
-        /* Estilos do Modal de Presentes */
         .gift-title {
             font-family: var(--fonte-serif);
             color: var(--cor-roxo-escuro);
@@ -317,59 +411,8 @@
             color: var(--cor-roxo-escuro);
             margin-top: 20px;
         }
-
-        .music-btn {
-            position: fixed;
-            bottom: 20px;
-            right: 20px;
-            width: 50px;
-            height: 50px;
-            border-radius: 50%;
-            background-color: var(--cor-roxo-escuro);
-            color: #ffffff;
-            border: 2px solid #ffffff;
-            cursor: pointer;
-            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            font-size: 1.2rem;
-            z-index: 99;
-            transition: transform 0.3s ease, background-color 0.3s ease;
-        }
-
-        .music-btn:hover {
-            transform: scale(1.1);
-            background-color: var(--cor-roxo-medio);
-        }
-
-        /* Animação para quando a música estiver tocando */
-        .music-playing {
-            animation: pulse 2s infinite;
-        }
-
-        @keyframes pulse {
-            0% {
-                box-shadow: 0 0 0 0 rgba(74, 38, 86, 0.6);
-            }
-            70% {
-                box-shadow: 0 0 0 15px rgba(74, 38, 86, 0);
-            }
-            100% {
-                box-shadow: 0 0 0 0 rgba(74, 38, 86, 0);
-            }
-        }
     </style>
 </head>
-<audio id="bgMusic" loop>
-    <source src="angra.mp3" type="audio/mpeg">
-    Seu navegador não suporta o elemento de áudio.
-</audio>
-
-<!-- Botão Flutuante de Música -->
-<button class="music-btn" id="musicBtn" onclick="toggleMusic()">
-    <i class="fa-solid fa-music" id="musicIcon"></i>
-</button>
 <body>
 
     <div class="container">
@@ -403,6 +446,32 @@
             <div class="date-side">Às 10 Horas<br><small>♥</small></div>
         </div>
 
+        <!-- Contagem Regressiva -->
+        <div class="countdown-container">
+            <div class="countdown-title">Faltam apenas</div>
+            <div class="countdown-timer">
+                <div class="timer-box">
+                    <span class="timer-number" id="days">00</span>
+                    <span class="timer-label">Dias</span>
+                </div>
+                <span class="timer-divider">:</span>
+                <div class="timer-box">
+                    <span class="timer-number" id="hours">00</span>
+                    <span class="timer-label">Horas</span>
+                </div>
+                <span class="timer-divider">:</span>
+                <div class="timer-box">
+                    <span class="timer-number" id="minutes">00</span>
+                    <span class="timer-label">Min</span>
+                </div>
+                <span class="timer-divider">:</span>
+                <div class="timer-box">
+                    <span class="timer-number" id="seconds">00</span>
+                    <span class="timer-label">Seg</span>
+                </div>
+            </div>
+        </div>
+
         <!-- Local -->
         <div class="location-box">
             <i class="fa-solid fa-location-dot" style="color: var(--cor-roxo-escuro);"></i>
@@ -412,24 +481,33 @@
 
         <!-- Botões Interativos -->
         <div class="buttons-grid">
-            <!-- Botão do Google Maps -->
             <a href="https://maps.google.com/?q=Chácara+Recanto+Fama+Caçapava+SP" target="_blank" class="btn">
                 <i class="fa-solid fa-map-location-dot"></i> Ver Local no Google Maps
             </a>
 
-            <!-- Botão para Abrir Modal RSVP -->
             <button class="btn btn-outline" onclick="openModal('rsvpModal')">
                 <i class="fa-solid fa-check"></i> Confirmar Presença
             </button>
 
-            <!-- Botão para Abrir Modal de Presentes -->
             <button class="btn btn-outline" onclick="openModal('giftsModal')">
                 <i class="fa-solid fa-gift"></i> Sugestão de Presente
             </button>
         </div>
     </div>
 
-    <!-- MODAL RSVP (Confirmação de Presença) -->
+    <!-- Player de Música -->
+    <audio id="bgMusic" loop>
+        <source src="musica.mp3" type="audio/mpeg">
+    </audio>
+
+    <div class="music-player-container">
+        <input type="range" id="volumeControl" class="volume-slider" min="0" max="1" step="0.05" value="0.3" oninput="changeVolume(this.value)">
+        <button class="music-btn" id="musicBtn" onclick="toggleMusic()">
+            <i class="fa-solid fa-music" id="musicIcon"></i>
+        </button>
+    </div>
+
+    <!-- MODAL RSVP -->
     <div id="rsvpModal" class="modal">
         <div class="modal-content">
             <span class="close-btn" onclick="closeModal('rsvpModal')">&times;</span>
@@ -460,7 +538,7 @@
         </div>
     </div>
 
-    <!-- MODAL SUGESTÃO DE PRESENTES -->
+    <!-- MODAL PRESENTES -->
     <div id="giftsModal" class="modal">
         <div class="modal-content">
             <span class="close-btn" onclick="closeModal('giftsModal')">&times;</span>
@@ -487,45 +565,33 @@
     </div>
 
     <script>
-        const music = document.getElementById('bgMusic');
-        // Define o volume inicial em 30% (suave para fundo)
-        music.volume = 0.1;
-        const musicBtn = document.getElementById('musicBtn');
-        const musicIcon = document.getElementById('musicIcon');
-        let isPlaying = false;
+        // --- CONTAGEM REGRESSIVA ---
+        const eventDate = new Date("March 20, 2027 10:00:00").getTime();
 
-        function toggleMusic() {
-            if (isPlaying) {
-                music.pause();
-                musicIcon.classList.remove('fa-pause');
-                musicIcon.classList.add('fa-music');
-                musicBtn.classList.remove('music-playing');
-                isPlaying = false;
-            } else {
-                music.play();
-                musicIcon.classList.remove('fa-music');
-                musicIcon.classList.add('fa-pause');
-                musicBtn.classList.add('music-playing');
-                isPlaying = true;
+        function updateCountdown() {
+            const now = new Date().getTime();
+            const distance = eventDate - now;
+
+            if (distance < 0) {
+                document.querySelector(".countdown-container").innerHTML = "<div class='countdown-title'>É Hoje! 🎉</div>";
+                return;
             }
+
+            const days = Math.floor(distance / (1000 * 60 * 60 * 24));
+            const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+            const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+            const seconds = Math.floor((distance % (1000 * 60)) / 1000);
+
+            document.getElementById("days").innerText = String(days).padStart(2, '0');
+            document.getElementById("hours").innerText = String(hours).padStart(2, '0');
+            document.getElementById("minutes").innerText = String(minutes).padStart(2, '0');
+            document.getElementById("seconds").innerText = String(seconds).padStart(2, '0');
         }
 
-        // Inicia a música no primeiro clique que o convidado der na tela (para burlar a trava de autoplay)
-        document.body.addEventListener('click', function startMusicOnFirstClick() {
-            if (!isPlaying) {
-                music.play().then(() => {
-                    musicIcon.classList.remove('fa-music');
-                    musicIcon.classList.add('fa-pause');
-                    musicBtn.classList.add('music-playing');
-                    isPlaying = true;
-                }).catch(error => {
-                    console.log("Autoplay bloqueado até interação manual do usuário.", error);
-                });
-            }
-            // Remove o ouvinte após o primeiro clique para não interferir nos cliques subsequentes
-            document.body.removeEventListener('click', startMusicOnFirstClick);
-        }, { once: true });
-        // Funções para abrir/fechar modais
+        setInterval(updateCountdown, 1000);
+        updateCountdown();
+
+        // --- CONTROLE DE MODAIS ---
         function openModal(id) {
             document.getElementById(id).style.display = 'flex';
         }
@@ -534,18 +600,52 @@
             document.getElementById(id).style.display = 'none';
         }
 
-        // Fechar modal ao clicar fora do conteúdo
         window.onclick = function(event) {
             if (event.target.classList.contains('modal')) {
                 event.target.style.display = 'none';
             }
         }
 
-        // Enviar confirmação via WhatsApp
+        // --- CONTROLE DE MÚSICA ---
+        const music = document.getElementById('bgMusic');
+        const musicBtn = document.getElementById('musicBtn');
+        const musicIcon = document.getElementById('musicIcon');
+        let isPlaying = false;
+
+        music.volume = 0.3;
+
+        function changeVolume(val) {
+            music.volume = val;
+        }
+
+        function toggleMusic() {
+            if (isPlaying) {
+                music.pause();
+                musicIcon.classList.remove('fa-pause');
+                musicIcon.classList.add('fa-music');
+                isPlaying = false;
+            } else {
+                music.play();
+                musicIcon.classList.remove('fa-music');
+                musicIcon.classList.add('fa-pause');
+                isPlaying = true;
+            }
+        }
+
+        document.body.addEventListener('click', function startMusicOnFirstClick() {
+            if (!isPlaying) {
+                music.play().then(() => {
+                    musicIcon.classList.remove('fa-music');
+                    musicIcon.classList.add('fa-pause');
+                    isPlaying = true;
+                }).catch(err => console.log("Autoplay bloqueado:", err));
+            }
+        }, { once: true });
+
+        // --- WHATSAPP RSVP ---
         function sendWhatsApp(event) {
             event.preventDefault();
-            
-            const numeroTelefone = "5512991956641"; 
+            const numeroTelefone = "5512999999999"; // Coloque o número aqui
 
             const nome = document.getElementById('nome').value;
             const acompanhantes = document.getElementById('acompanhantes').value;
