@@ -538,6 +538,37 @@
         </div>
     </div>
 
+    <!-- MODAL RSVP -->
+    <div id="rsvpModal" class="modal">
+        <div class="modal-content">
+            <span class="close-btn" onclick="closeModal('rsvpModal')">&times;</span>
+            <h3 style="font-family: var(--fonte-serif); color: var(--cor-roxo-escuro); margin-bottom: 15px;">Confirmar Presença</h3>
+            
+            <form id="rsvpForm" onsubmit="sendWhatsApp(event)">
+                <div class="form-group">
+                    <label for="nome">Seu Nome Completo:</label>
+                    <input type="text" id="nome" required placeholder="Digite seu nome">
+                </div>
+                <div class="form-group">
+                    <label for="acompanhantes">Quantidade de Acompanhantes:</label>
+                    <select id="acompanhantes">
+                        <option value="0">Vou sozinho(a)</option>
+                        <option value="1">1 Acompanhante</option>
+                        <option value="2">2 Acompanhantes</option>
+                        <option value="3">3 Acompanhantes</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="nomesAcompanhantes">Nome do(s) Acompanhante(s):</label>
+                    <input type="text" id="nomesAcompanhantes" placeholder="Ex: Maria (esposa), Pedro (filho)">
+                </div>
+                <button type="submit" class="btn" style="width: 100%; margin-top: 10px;">
+                    <i class="fa-brands fa-whatsapp"></i> Enviar pelo WhatsApp
+                </button>
+            </form>
+        </div>
+    </div>
+
     <!-- MODAL PRESENTES -->
     <div id="giftsModal" class="modal">
         <div class="modal-content">
@@ -624,4 +655,43 @@
                 musicIcon.classList.remove('fa-pause');
                 musicIcon.classList.add('fa-music');
                 isPlaying = false;
-                
+            } else {
+                music.play();
+                musicIcon.classList.remove('fa-music');
+                musicIcon.classList.add('fa-pause');
+                isPlaying = true;
+            }
+        }
+
+        document.body.addEventListener('click', function startMusicOnFirstClick() {
+            if (!isPlaying) {
+                music.play().then(() => {
+                    musicIcon.classList.remove('fa-music');
+                    musicIcon.classList.add('fa-pause');
+                    isPlaying = true;
+                }).catch(err => console.log("Autoplay bloqueado:", err));
+            }
+        }, { once: true });
+
+        // --- WHATSAPP RSVP ---
+        function sendWhatsApp(event) {
+            event.preventDefault();
+            const numeroTelefone = "5512999999999"; // Coloque o número aqui
+
+            const nome = document.getElementById('nome').value;
+            const acompanhantes = document.getElementById('acompanhantes').value;
+            const nomesAcompanhantes = document.getElementById('nomesAcompanhantes').value;
+
+            let mensagem = `Olá! Gostaria de confirmar minha presença no casamento de Márcio e Renata! ♥%0A%0A`;
+            mensagem += `*Nome:* ${nome}%0A`;
+            mensagem += `*Acompanhantes:* ${acompanhantes}%0A`;
+            if (nomesAcompanhantes) {
+                mensagem += `*Nomes:* ${nomesAcompanhantes}%0A`;
+            }
+
+            const url = `https://api.whatsapp.com/send?phone=${numeroTelefone}&text=${mensagem}`;
+            window.open(url, '_blank');
+        }
+    </script>
+</body>
+</html>
