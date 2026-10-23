@@ -350,7 +350,7 @@
 
         .modal-content {
             background: white;
-            padding: 35px 25px;
+            padding: 30px 20px;
             border-radius: 16px;
             max-width: 480px;
             width: 100%;
@@ -395,7 +395,7 @@
             color: var(--cor-roxo-escuro);
             font-size: 1rem;
             letter-spacing: 1.5px;
-            margin-bottom: 20px;
+            margin-bottom: 15px;
         }
 
         .gift-text {
@@ -410,6 +410,78 @@
             font-size: 2.2rem;
             color: var(--cor-roxo-escuro);
             margin-top: 20px;
+        }
+
+        /* Estilos da Cabine de Fotos */
+        .camera-box {
+            width: 100%;
+            max-height: 300px;
+            background: #000;
+            border-radius: 10px;
+            overflow: hidden;
+            position: relative;
+            margin-bottom: 12px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        #videoElement, #canvasElement, #photoPreview {
+            width: 100%;
+            height: auto;
+            max-height: 280px;
+            object-fit: cover;
+            border-radius: 8px;
+        }
+
+        .frame-selector {
+            display: flex;
+            gap: 6px;
+            justify-content: center;
+            margin-bottom: 12px;
+            flex-wrap: wrap;
+        }
+
+        .btn-frame {
+            background: #fff;
+            color: var(--cor-roxo-escuro);
+            border: 1px solid var(--cor-roxo-claro);
+            padding: 6px 10px;
+            border-radius: 15px;
+            font-size: 0.75rem;
+            cursor: pointer;
+            font-family: var(--fonte-serif);
+            transition: all 0.2s;
+        }
+
+        .btn-frame.active, .btn-frame:hover {
+            background-color: var(--cor-roxo-escuro);
+            color: #fff;
+        }
+
+        .frame-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            border: 14px solid rgba(74, 38, 86, 0.85);
+            pointer-events: none;
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-end;
+            box-sizing: border-box;
+        }
+
+        .frame-bottom-bar {
+            background: rgba(255, 255, 255, 0.92);
+            padding: 8px;
+            font-family: var(--fonte-serif);
+            font-size: 0.7rem;
+            color: var(--cor-roxo-escuro);
+            letter-spacing: 1px;
+            text-align: center;
+            border-top: 2px solid var(--cor-roxo-escuro);
         }
     </style>
 </head>
@@ -492,6 +564,10 @@
             <button class="btn btn-outline" onclick="openModal('giftsModal')">
                 <i class="fa-solid fa-gift"></i> Sugestão de Presente
             </button>
+
+            <button class="btn btn-outline" onclick="openPhotoBooth()">
+                <i class="fa-solid fa-camera"></i> Tirar Foto com Moldura
+            </button>
         </div>
     </div>
 
@@ -505,37 +581,6 @@
         <button class="music-btn" id="musicBtn" onclick="toggleMusic()">
             <i class="fa-solid fa-music" id="musicIcon"></i>
         </button>
-    </div>
-
-    <!-- MODAL RSVP -->
-    <div id="rsvpModal" class="modal">
-        <div class="modal-content">
-            <span class="close-btn" onclick="closeModal('rsvpModal')">&times;</span>
-            <h3 style="font-family: var(--fonte-serif); color: var(--cor-roxo-escuro); margin-bottom: 15px;">Confirmar Presença</h3>
-            
-            <form id="rsvpForm" onsubmit="sendWhatsApp(event)">
-                <div class="form-group">
-                    <label for="nome">Seu Nome Completo:</label>
-                    <input type="text" id="nome" required placeholder="Digite seu nome">
-                </div>
-                <div class="form-group">
-                    <label for="acompanhantes">Quantidade de Acompanhantes:</label>
-                    <select id="acompanhantes">
-                        <option value="0">Vou sozinho(a)</option>
-                        <option value="1">1 Acompanhante</option>
-                        <option value="2">2 Acompanhantes</option>
-                        <option value="3">3 Acompanhantes</option>
-                    </select>
-                </div>
-                <div class="form-group">
-                    <label for="nomesAcompanhantes">Nome do(s) Acompanhante(s):</label>
-                    <input type="text" id="nomesAcompanhantes" placeholder="Ex: Maria (esposa), Pedro (filho)">
-                </div>
-                <button type="submit" class="btn" style="width: 100%; margin-top: 10px;">
-                    <i class="fa-brands fa-whatsapp"></i> Enviar pelo WhatsApp
-                </button>
-            </form>
-        </div>
     </div>
 
     <!-- MODAL RSVP -->
@@ -595,6 +640,52 @@
         </div>
     </div>
 
+    <!-- MODAL CABINE DE FOTOS -->
+    <div id="photoModal" class="modal">
+        <div class="modal-content">
+            <span class="close-btn" onclick="closeModal('photoModal'); stopCamera();">&times;</span>
+            <h3 class="gift-title">📸 Cabine de Fotos</h3>
+            
+            <!-- Seletor de Molduras -->
+            <div class="frame-selector">
+                <button class="btn-frame active" onclick="setFrame('floral', this)">🌸 Floral</button>
+                <button class="btn-frame" onclick="setFrame('coracao', this)">❤️ Coração</button>
+                <button class="btn-frame" onclick="setFrame('detalhes', this)">📅 Detalhes</button>
+                <button class="btn-frame" onclick="setFrame('rock', this)">🎸 Rock</button>
+            </div>
+
+            <div class="camera-box" id="cameraBox">
+                <video id="videoElement" autoplay playsinline></video>
+                <canvas id="canvasElement" style="display:none;"></canvas>
+                <img id="photoPreview" style="display:none;" alt="Foto tirada">
+                
+                <div class="frame-overlay" id="frameOverlay">
+                    <div class="frame-bottom-bar" id="overlayText">🌸 Márcio & Renata • 20.03.2027</div>
+                </div>
+            </div>
+
+            <div id="cameraControls">
+                <button id="snapBtn" class="btn" onclick="takePhoto()" style="width: 100%;">
+                    <i class="fa-solid fa-camera"></i> Tirar Foto
+                </button>
+            </div>
+
+            <div id="actionControls" style="display: none; display: flex; flex-direction: column; gap: 8px; margin-top: 10px;">
+                <div style="display: flex; gap: 8px;">
+                    <button class="btn btn-outline" onclick="retakePhoto()" style="flex: 1;">
+                        <i class="fa-solid fa-rotate-right"></i> Outra
+                    </button>
+                    <a id="downloadBtn" class="btn" style="flex: 1; text-decoration: none;" download="casamento-marcio-renata.png">
+                        <i class="fa-solid fa-download"></i> Baixar
+                    </a>
+                </div>
+                <button class="btn" onclick="sharePhoto()" style="background-color: #25D366; width: 100%;">
+                    <i class="fa-brands fa-whatsapp"></i> Compartilhar / Enviar Foto
+                </button>
+            </div>
+        </div>
+    </div>
+
     <script>
         // --- CONTAGEM REGRESSIVA ---
         const eventDate = new Date("March 20, 2027 10:00:00").getTime();
@@ -603,8 +694,18 @@
             const now = new Date().getTime();
             const distance = eventDate - now;
 
+            const daysEl = document.getElementById("days");
+            const hoursEl = document.getElementById("hours");
+            const minutesEl = document.getElementById("minutes");
+            const secondsEl = document.getElementById("seconds");
+
+            if (!daysEl || !hoursEl || !minutesEl || !secondsEl) return;
+
             if (distance < 0) {
-                document.querySelector(".countdown-container").innerHTML = "<div class='countdown-title'>É Hoje! 🎉</div>";
+                const container = document.querySelector(".countdown-container");
+                if (container) {
+                    container.innerHTML = "<div class='countdown-title'>É Hoje! 🎉</div>";
+                }
                 return;
             }
 
@@ -613,10 +714,10 @@
             const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
             const seconds = Math.floor((distance % (1000 * 60)) / 1000);
 
-            document.getElementById("days").innerText = String(days).padStart(2, '0');
-            document.getElementById("hours").innerText = String(hours).padStart(2, '0');
-            document.getElementById("minutes").innerText = String(minutes).padStart(2, '0');
-            document.getElementById("seconds").innerText = String(seconds).padStart(2, '0');
+            daysEl.innerText = String(days).padStart(2, '0');
+            hoursEl.innerText = String(hours).padStart(2, '0');
+            minutesEl.innerText = String(minutes).padStart(2, '0');
+            secondsEl.innerText = String(seconds).padStart(2, '0');
         }
 
         setInterval(updateCountdown, 1000);
@@ -624,16 +725,19 @@
 
         // --- CONTROLE DE MODAIS ---
         function openModal(id) {
-            document.getElementById(id).style.display = 'flex';
+            const modal = document.getElementById(id);
+            if (modal) modal.style.display = 'flex';
         }
 
         function closeModal(id) {
-            document.getElementById(id).style.display = 'none';
+            const modal = document.getElementById(id);
+            if (modal) modal.style.display = 'none';
         }
 
         window.onclick = function(event) {
             if (event.target.classList.contains('modal')) {
                 event.target.style.display = 'none';
+                stopCamera();
             }
         }
 
@@ -643,31 +747,39 @@
         const musicIcon = document.getElementById('musicIcon');
         let isPlaying = false;
 
-        music.volume = 0.3;
+        if (music) music.volume = 0.3;
 
         function changeVolume(val) {
-            music.volume = val;
+            if (music) music.volume = val;
         }
 
         function toggleMusic() {
+            if (!music) return;
             if (isPlaying) {
                 music.pause();
-                musicIcon.classList.remove('fa-pause');
-                musicIcon.classList.add('fa-music');
+                if (musicIcon) {
+                    musicIcon.classList.remove('fa-pause');
+                    musicIcon.classList.add('fa-music');
+                }
                 isPlaying = false;
             } else {
-                music.play();
-                musicIcon.classList.remove('fa-music');
-                musicIcon.classList.add('fa-pause');
-                isPlaying = true;
+                music.play().then(() => {
+                    if (musicIcon) {
+                        musicIcon.classList.remove('fa-music');
+                        musicIcon.classList.add('fa-pause');
+                    }
+                    isPlaying = true;
+                }).catch(err => console.log("Erro ao reproduzir áudio:", err));
             }
         }
 
         document.body.addEventListener('click', function startMusicOnFirstClick() {
-            if (!isPlaying) {
+            if (music && !isPlaying) {
                 music.play().then(() => {
-                    musicIcon.classList.remove('fa-music');
-                    musicIcon.classList.add('fa-pause');
+                    if (musicIcon) {
+                        musicIcon.classList.remove('fa-music');
+                        musicIcon.classList.add('fa-pause');
+                    }
                     isPlaying = true;
                 }).catch(err => console.log("Autoplay bloqueado:", err));
             }
@@ -676,11 +788,11 @@
         // --- WHATSAPP RSVP ---
         function sendWhatsApp(event) {
             event.preventDefault();
-            const numeroTelefone = "5512999999999"; // Coloque o número aqui
+            const numeroTelefone = "5512999999999"; 
 
-            const nome = document.getElementById('nome').value;
-            const acompanhantes = document.getElementById('acompanhantes').value;
-            const nomesAcompanhantes = document.getElementById('nomesAcompanhantes').value;
+            const nome = document.getElementById('nome')?.value || '';
+            const acompanhantes = document.getElementById('acompanhantes')?.value || '0';
+            const nomesAcompanhantes = document.getElementById('nomesAcompanhantes')?.value || '';
 
             let mensagem = `Olá! Gostaria de confirmar minha presença no casamento de Márcio e Renata! ♥%0A%0A`;
             mensagem += `*Nome:* ${nome}%0A`;
@@ -691,6 +803,151 @@
 
             const url = `https://api.whatsapp.com/send?phone=${numeroTelefone}&text=${mensagem}`;
             window.open(url, '_blank');
+        }
+
+        // --- CABINE DE FOTOS ---
+        let videoStream = null;
+        let currentFrameType = 'floral';
+
+        function setFrame(type, btnElement) {
+            currentFrameType = type;
+            
+            document.querySelectorAll('.btn-frame').forEach(b => b.classList.remove('active'));
+            if (btnElement) btnElement.classList.add('active');
+
+            const overlayText = document.getElementById('overlayText');
+            const frameOverlay = document.getElementById('frameOverlay');
+
+            if (type === 'floral') {
+                frameOverlay.style.borderColor = "rgba(74, 38, 86, 0.85)";
+                overlayText.innerText = "🌸 Márcio & Renata • 20.03.2027";
+            } else if (type === 'coracao') {
+                frameOverlay.style.borderColor = "rgba(180, 50, 100, 0.85)";
+                overlayText.innerText = "❤️ O Amor Está No Air • Márcio & Renata";
+            } else if (type === 'detalhes') {
+                frameOverlay.style.borderColor = "rgba(122, 79, 136, 0.85)";
+                overlayText.innerText = "📅 20.03.2027 • Chácara Recanto Fama";
+            } else if (type === 'rock') {
+                frameOverlay.style.borderColor = "rgba(20, 20, 20, 0.95)";
+                overlayText.innerText = "🎸 ROCK 'N' LOVE ⚡ Márcio & Renata";
+            }
+        }
+
+        function openPhotoBooth() {
+            openModal('photoModal');
+            const video = document.getElementById('videoElement');
+            document.getElementById('videoElement').style.display = 'block';
+            document.getElementById('photoPreview').style.display = 'none';
+            document.getElementById('frameOverlay').style.display = 'flex';
+            document.getElementById('cameraControls').style.display = 'block';
+            document.getElementById('actionControls').style.display = 'none';
+
+            navigator.mediaDevices.getUserMedia({ video: { facingMode: 'user' }, audio: false })
+                .then(stream => {
+                    videoStream = stream;
+                    video.srcObject = stream;
+                })
+                .catch(err => {
+                    alert("Não foi possível acessar a câmera do dispositivo.");
+                    console.error(err);
+                });
+        }
+
+        function stopCamera() {
+            if (videoStream) {
+                videoStream.getTracks().forEach(track => track.stop());
+                videoStream = null;
+            }
+        }
+
+        function takePhoto() {
+            const video = document.getElementById('videoElement');
+            const canvas = document.getElementById('canvasElement');
+            const photoPreview = document.getElementById('photoPreview');
+            
+            canvas.width = video.videoWidth || 640;
+            canvas.height = video.videoHeight || 480;
+            
+            const context = canvas.getContext('2d');
+            context.drawImage(video, 0, 0, canvas.width, canvas.height);
+            
+            let borderColor = "#4a2656";
+            let footerText = "🌸 Márcio & Renata • 20.03.2027";
+
+            if (currentFrameType === 'floral') {
+                borderColor = "#4a2656";
+                footerText = "🌸 Márcio & Renata • 20.03.2027";
+            } else if (currentFrameType === 'coracao') {
+                borderColor = "#b43264";
+                footerText = "❤️ O Amor Está No Ar • Márcio & Renata";
+            } else if (currentFrameType === 'detalhes') {
+                borderColor = "#7a4f88";
+                footerText = "📅 20.03.2027 • Chácara Recanto Fama - Caçapava/SP";
+            } else if (currentFrameType === 'rock') {
+                borderColor = "#1a1a1a";
+                footerText = "🎸 ROCK 'N' LOVE ⚡ Márcio & Renata • O Casamento Mais Metal!";
+            }
+
+            const borderWidth = 22;
+            context.strokeStyle = borderColor;
+            context.lineWidth = borderWidth * 2;
+            context.strokeRect(0, 0, canvas.width, canvas.height);
+
+            const barHeight = 45;
+            context.fillStyle = "rgba(255, 255, 255, 0.95)";
+            context.fillRect(0, canvas.height - barHeight, canvas.width, barHeight);
+
+            context.strokeStyle = borderColor;
+            context.lineWidth = 2;
+            context.beginPath();
+            context.moveTo(0, canvas.height - barHeight);
+            context.lineTo(canvas.width, canvas.height - barHeight);
+            context.stroke();
+
+            context.fillStyle = (currentFrameType === 'rock') ? "#1a1a1a" : "#4a2656";
+            context.font = "bold 15px Cinzel, serif";
+            context.textAlign = "center";
+            context.fillText(footerText, canvas.width / 2, canvas.height - 17);
+
+            const dataURL = canvas.toDataURL('image/png');
+            photoPreview.src = dataURL;
+            
+            stopCamera();
+            video.style.display = 'none';
+            document.getElementById('frameOverlay').style.display = 'none';
+            photoPreview.style.display = 'block';
+            
+            document.getElementById('cameraControls').style.display = 'none';
+            document.getElementById('actionControls').style.display = 'flex';
+            
+            const downloadBtn = document.getElementById('downloadBtn');
+            downloadBtn.href = dataURL;
+        }
+
+        function retakePhoto() {
+            openPhotoBooth();
+        }
+
+        // --- COMPARTILHAR DIRETO NO WHATSAPP / REDES SOCIAIS ---
+        function sharePhoto() {
+            const canvas = document.getElementById('canvasElement');
+            canvas.toBlob(async (blob) => {
+                const file = new File([blob], "casamento-marcio-renata.png", { type: "image/png" });
+                
+                if (navigator.canShare && navigator.canShare({ files: [file] })) {
+                    try {
+                        await navigator.share({
+                            files: [file],
+                            title: 'Casamento Márcio & Renata',
+                            text: 'Olha que foto legal tirei no convite de casamento do Márcio e da Renata! 💜'
+                        });
+                    } catch (error) {
+                        console.log('Compartilhamento cancelado ou falhou', error);
+                    }
+                } else {
+                    alert("O compartilhamento direto de imagem não é suportado neste navegador. Utilize o botão 'Baixar' para salvar a foto!");
+                }
+            }, 'image/png');
         }
     </script>
 </body>
